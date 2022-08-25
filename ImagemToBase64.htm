@@ -1,0 +1,42 @@
+<html>
+<body>
+<h1>Conversor de imagem URL para Base64</h1>
+<img id="imageid" name="imageid" height="100" width="100" onclick="teste();">
+src=<input type="text" id="novaimagem" name="novaimagem" width="60px" value="https://chart.googleapis.com/chart?cht=qr&amp;chs=300x300&amp;chld=L|1&amp;chl=www.pr.senac.br"/><input type="button" value="gerar" onclick="Gerar()">
+<br><textarea id="txtBase64" cols="150" rows="30"></textarea>
+</body>
+</html>
+<script language="javascript">
+
+function Gerar(){
+	document.getElementById("imageid").src = document.getElementById("novaimagem").value;
+	getBase64Image(document.getElementById("imageid"),function(base64){
+		console.log(base64)
+		txtBase64.value = base64;
+	});
+}
+
+function convert(oldImag, callback) {
+    var img = new Image();
+    img.onload = function(){
+        callback(img)
+    }
+    img.setAttribute('crossorigin', 'anonymous');
+    img.src = oldImag.src;
+}
+function getBase64Image(img,callback) {
+    convert(img, function(newImg){
+        var canvas = document.createElement("canvas");
+        canvas.width = newImg.width;
+        canvas.height = newImg.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(newImg, 0, 0);
+        var base64=canvas.toDataURL("image/png");
+        callback(base64)
+    })
+}
+
+Gerar();
+
+</script>
+
