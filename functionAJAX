@@ -1,0 +1,40 @@
+function fazerChamadaAjax(arquivoDestino, parametros, callback) {
+  // Cria um objeto XMLHttpRequest
+  let xhttp = new XMLHttpRequest();
+  
+  // Define a URL da requisição AJAX
+  let url = arquivoDestino;
+  
+  // Define o método HTTP da requisição como POST
+  xhttp.open("POST", url, true);
+  
+  // Define o tipo de conteúdo da requisição como application/x-www-form-urlencoded
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  
+  // Define uma função callback para lidar com a resposta da requisição
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // A resposta da requisição está pronta e foi bem-sucedida
+      let resposta = this.responseText;
+      console.log(resposta);
+      
+      // Chama a função callback passando a resposta como parâmetro
+      callback(resposta);
+    }
+  };
+  
+  // Envia a requisição com os parâmetros
+  xhttp.send(parametros);
+}
+
+// Exemplo de uso da função, chamando a função fazerChamadaAjax() com uma função callback
+let arquivoDestino = "exemplo.php";
+let parametros = "nome=João&idade=30";
+
+// Define uma função callback para lidar com a resposta da requisição
+function handleResponse(resposta) {
+  console.log(resposta);
+}
+
+// Chama a função fazerChamadaAjax() com a função callback definida
+fazerChamadaAjax(arquivoDestino, parametros, handleResponse);
